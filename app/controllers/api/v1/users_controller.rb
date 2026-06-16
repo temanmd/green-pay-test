@@ -24,10 +24,6 @@ module Api
         user = User.includes(:account).find(id)
         render json: UserSerializer.new.serialize_to_json(user), status: status
       end
-
-      def render_errors(outcome)
-        render json: { errors: outcome.errors.message_list }, status: :unprocessable_content
-      end
     end
   end
 end

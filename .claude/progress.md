@@ -37,9 +37,12 @@
   `Users::Create` + `Accounts::Deposit` (mutations, лок + deposit-запись), panko-сериализаторы,
   `Api::BaseController` (404/422), роуты `/api/v1`. Спека red→green (7 примеров), проверено curl.
 
+- **Step 7 — POST deposit**
+  `POST /api/v1/accounts/:id/deposit` поверх `Accounts::Deposit`. `render_errors` вынесен
+  в `Api::BaseController` (DRY). Спека red→green (3), проверено curl (1000→1500, 422, 404).
+
 ## Next
 
-- **Step 7** — `POST /api/v1/accounts/:id/deposit` (пополнение через `Accounts::Deposit`).
 - **Step 8** — `POST /api/v1/orders` (создание заказа в статусе `created`).
 - **Step 9** — `POST /api/v1/orders/:id/success` (settlement: лок, проверка средств, дебет).
 - **Step 10** — `POST /api/v1/orders/:id/cancel` (reversal/возврат).

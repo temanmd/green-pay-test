@@ -15,5 +15,10 @@ module Api
     def render_unprocessable(error)
       render json: { errors: error.record.errors.full_messages }, status: :unprocessable_content
     end
+
+    # Единый формат ответа на провал команды (mutations).
+    def render_errors(outcome)
+      render json: { errors: outcome.errors.message_list }, status: :unprocessable_content
+    end
   end
 end
