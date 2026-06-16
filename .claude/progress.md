@@ -67,11 +67,14 @@
   Проверено на чистом окружении: `down -v` → `up --build` (4с) → полный цикл curl
   (2000→2500→1000→2500) → `make test` 30/30.
 
+- **Security pass** — `make security` (brakeman + bundler-audit) в контейнере,
+  раздел «Безопасность» в README. Статус: brakeman 0 warnings, bundler-audit 0 CVE.
+
 ## Готово ✅
 
 ТЗ закрыто целиком: заказы (create/success/cancel), счета-кошельки с депозитами,
 append-only леджер, балансы под локами, идемпотентность (доменная + HTTP). 30 request-спек,
-rubocop чистый, запуск одной командой `make up`.
+rubocop чистый, brakeman/bundler-audit чистые, запуск одной командой `make up`.
 
 ## Заметки
 

@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help up upd down reset build logs ps console bash test rspec rubocop migrate
+.PHONY: help up upd down reset build logs ps console bash test rspec rubocop security migrate
 
 help: ## Показать список команд
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
@@ -38,6 +38,9 @@ rspec: test ## Алиас для test
 
 rubocop: ## Запустить RuboCop в контейнере
 	docker compose run --rm app bundle exec rubocop
+
+security: ## Сканеры безопасности: brakeman + bundler-audit
+	docker compose run --rm app bash -c "bundle exec brakeman -q --no-pager && bundle exec bundler-audit check --update"
 
 migrate: ## Накатить миграции
 	docker compose exec app bin/rails db:migrate

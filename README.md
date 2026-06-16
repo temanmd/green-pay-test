@@ -45,6 +45,7 @@ make up
 | `make reset`   | Полный сброс вместе с томом БД                           |
 | `make test`    | Прогнать весь RSpec в контейнере                         |
 | `make rubocop` | Линтер                                                  |
+| `make security`| Сканеры безопасности (brakeman + bundler-audit)         |
 | `make console` | Rails-консоль в контейнере                              |
 | `make bash`    | Shell в контейнере                                       |
 | `make`         | Список всех команд                                       |
@@ -67,6 +68,22 @@ bundle install
 bundle exec rspec
 bundle exec rubocop
 ```
+
+## Безопасность
+
+Для платёжного сервиса безопасность — первый класс. В проекте два статических сканера:
+
+```bash
+make security                       # оба сразу в контейнере
+# или по отдельности:
+bundle exec brakeman                # статический анализ кода (SQLi, mass-assignment, RCE…)
+bundle exec bundler-audit check --update   # известные CVE в зависимостях
+```
+
+Текущий статус: **brakeman — 0 предупреждений**, **bundler-audit — уязвимых гемов нет**.
+Дополнительно безопасность опирается на сам дизайн: деньги меняются только в
+command-объектах под транзакцией и локами, инварианты застрахованы БД-констрейнтами,
+а строгие параметры (`params.expect`) исключают mass-assignment.
 
 ## API
 
