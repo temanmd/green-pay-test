@@ -45,9 +45,13 @@
   `Orders::Create` (валюта наследуется от счёта; user_id/amount валидируются → 422),
   `OrderSerializer`, `POST /orders` + `GET /orders/:id`. Спека red→green (6), проверено curl.
 
+- **Step 9 — POST order success (ядро)**
+  `Orders::Succeed`: `order.with_lock` → проверка статуса → `account.lock!` → проверка
+  средств → settlement-запись (`-amount`) + дебет + `aasm succeed!`. Всё в одной транзакции,
+  локи order→account. Спека red→green (5: успех, нехватка, повтор, cancelled, 404). Проверено curl.
+
 ## Next
 
-- **Step 9** — `POST /api/v1/orders/:id/success` (settlement: лок, проверка средств, дебет).
 - **Step 10** — `POST /api/v1/orders/:id/cancel` (reversal/возврат).
 - **Step 11** — HTTP `Idempotency-Key`. **Step 12** — README + curl.
 

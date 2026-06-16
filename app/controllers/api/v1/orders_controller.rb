@@ -15,6 +15,13 @@ module Api
         render json: OrderSerializer.new.serialize_to_json(outcome.result), status: :created
       end
 
+      def success
+        outcome = Orders::Succeed.run(order_id: params.expect(:id))
+        return render_errors(outcome) unless outcome.success?
+
+        render json: OrderSerializer.new.serialize_to_json(outcome.result)
+      end
+
       private
 
       def order_params
