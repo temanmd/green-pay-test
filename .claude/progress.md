@@ -55,10 +55,15 @@
   кредит баланса + `aasm cancel!`; из `created` → отмена без денег; из `cancelled` → 422.
   Спека red→green (4). Проверено curl: 2000→500→2000, леджер = settlement + reversal (исходник цел).
 
+- **Step 11 — HTTP Idempotency-Key**
+  Таблица `idempotency_keys` (unique key, request_digest, сохранённый ответ), модель,
+  concern `Idempotent` (around_action в `Api::BaseController`, только POST + заголовок).
+  Повтор с тем же ключом/телом → сохранённый ответ; другое тело → 422; «в процессе» → 409.
+  Спека red→green (4). Проверено curl (повтор не задвоил депозит, конфликт → 422).
+
 ## Next
 
-- **Step 11** — HTTP `Idempotency-Key` (повтор запроса с тем же ключом → сохранённый первый ответ).
-- **Step 12** — README + curl-примеры; финальная проверка `make up`/`make test`.
+- **Step 12** — README + curl-примеры; финальная проверка `make up`/`make test`. Финал.
 
 ## Заметки
 

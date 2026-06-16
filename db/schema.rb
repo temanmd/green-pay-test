@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_16_120400) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_16_120500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_16_120400) do
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_accounts_on_user_id", unique: true
     t.check_constraint "balance_cents >= 0", name: "accounts_balance_non_negative"
+  end
+
+  create_table "idempotency_keys", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "key", null: false
+    t.string "request_digest", null: false
+    t.text "response_body"
+    t.integer "response_status"
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_idempotency_keys_on_key", unique: true
   end
 
   create_table "orders", force: :cascade do |t|

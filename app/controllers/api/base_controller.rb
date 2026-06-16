@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 module Api
-  # Базовый контроллер API: единообразные JSON-ответы об ошибках.
+  # Базовый контроллер API: единообразные JSON-ответы об ошибках + HTTP-идемпотентность.
   class BaseController < ApplicationController
+    include Idempotent
+
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable
 
