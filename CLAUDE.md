@@ -30,7 +30,8 @@ over feature breadth.
   writes in a single DB transaction, locks the account row
   (`SELECT … FOR UPDATE` via `with_lock`), and is the **only** place a balance
   changes.
-- **Read side** — query objects in `app/queries/`.
+- **Read side** — reads are trivial (find by id) and live in the controllers; a
+  dedicated `app/queries/` layer is the convention if/when reads grow.
 - **Serialization** — Panko serializers in `app/serializers/`.
 - **No business logic in ActiveRecord callbacks.** Status changes are explicit
   `aasm` events triggered *from commands*; side effects live in commands.
