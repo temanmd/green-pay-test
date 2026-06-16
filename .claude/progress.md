@@ -50,10 +50,15 @@
   средств → settlement-запись (`-amount`) + дебет + `aasm succeed!`. Всё в одной транзакции,
   локи order→account. Спека red→green (5: успех, нехватка, повтор, cancelled, 404). Проверено curl.
 
+- **Step 10 — POST order cancel (симметрия)**
+  `Orders::Cancel`: из `succeeded` → reversal-запись (`+amount`, `reverses_transaction_id`) +
+  кредит баланса + `aasm cancel!`; из `created` → отмена без денег; из `cancelled` → 422.
+  Спека red→green (4). Проверено curl: 2000→500→2000, леджер = settlement + reversal (исходник цел).
+
 ## Next
 
-- **Step 10** — `POST /api/v1/orders/:id/cancel` (reversal/возврат).
-- **Step 11** — HTTP `Idempotency-Key`. **Step 12** — README + curl.
+- **Step 11** — HTTP `Idempotency-Key` (повтор запроса с тем же ключом → сохранённый первый ответ).
+- **Step 12** — README + curl-примеры; финальная проверка `make up`/`make test`.
 
 ## Заметки
 

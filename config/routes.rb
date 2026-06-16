@@ -14,7 +14,10 @@ Rails.application.routes.draw do
         post :deposit, on: :member
       end
       resources :orders, only: %i[create show] do
-        post :success, on: :member
+        member do
+          post :success
+          post :cancel
+        end
       end
     end
   end
