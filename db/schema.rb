@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_16_120300) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_16_120400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,14 +42,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_16_120300) do
     t.bigint "amount_cents", null: false
     t.datetime "created_at", null: false
     t.string "kind", null: false
-    t.bigint "order_id", null: false
+    t.bigint "order_id"
     t.bigint "reverses_transaction_id"
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_transactions_on_account_id"
     t.index ["order_id", "kind"], name: "index_transactions_on_order_id_and_kind", unique: true
     t.index ["reverses_transaction_id"], name: "index_transactions_on_reverses_transaction_id"
     t.check_constraint "amount_cents <> 0", name: "transactions_amount_nonzero"
-    t.check_constraint "kind::text = ANY (ARRAY['settlement'::character varying, 'reversal'::character varying]::text[])", name: "transactions_kind_valid"
+    t.check_constraint "kind::text = 'deposit'::text AND order_id IS NULL OR kind::text <> 'deposit'::text AND order_id IS NOT NULL", name: "transactions_order_presence"
+    t.check_constraint "kind::text = ANY (ARRAY['deposit'::character varying, 'settlement'::character varying, 'reversal'::character varying]::text[])", name: "transactions_kind_valid"
   end
 
   create_table "users", force: :cascade do |t|

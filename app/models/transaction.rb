@@ -4,11 +4,11 @@
 # Знак amount_cents задаёт направление: settlement < 0 (списание), reversal > 0 (возврат).
 class Transaction < ApplicationRecord
   belongs_to :account
-  belongs_to :order
-  # reversal указывает на settlement, который сторнирует; у settlement — nil
+  belongs_to :order, optional: true # deposit не привязан к заказу
+  # reversal указывает на settlement, который сторнирует; у settlement/deposit — nil
   belongs_to :reverses_transaction, class_name: 'Transaction', optional: true
 
-  enum :kind, { settlement: 'settlement', reversal: 'reversal' }
+  enum :kind, { deposit: 'deposit', settlement: 'settlement', reversal: 'reversal' }
 
   validates :amount_cents, numericality: { other_than: 0 }
 

@@ -21,23 +21,32 @@
   Проверено: `/up` → 200, `SELECT version()` → PostgreSQL 18.4.
 
 - **Step 3 — context docs**
-  `CLAUDE.md` (авто-подхват сессией), `docs/decisions.md` (ADR-001…008 + допущение
-  по направлению средств), этот журнал.
+  `CLAUDE.md` (авто-подхват сессией), `docs/decisions.md` (ADR-001…009), этот журнал.
+
+- **Step 4 — domain schema**
+  Модели + миграции: `User`, `Account` (CHECK balance ≥ 0), `Order` (aasm-статусы),
+  `Transaction` (append-only, знаковый `amount_cents`, unique `(order_id, kind)`,
+  self-FK для reversal, `readonly?`). Все FK проиндексированы. Проверено smoke-скриптом.
+
+- **Step 5 — RSpec request-харнесс**
+  `rails_helper` (factory_bot, isolator, test-prof), `spec_helper` (SimpleCov по флагу),
+  `ApiHelpers`, фабрики, health-спека. Добавлен `benchmark` (вынесен из stdlib в Ruby 4.0).
+
+- **Step 6 — POST/GET users (первый TDD-срез)**
+  Эволюция леджера под депозиты (`order_id` nullable, `kind=deposit`, CHECK-связка).
+  `Users::Create` + `Accounts::Deposit` (mutations, лок + deposit-запись), panko-сериализаторы,
+  `Api::BaseController` (404/422), роуты `/api/v1`. Спека red→green (7 примеров), проверено curl.
 
 ## Next
 
-- **Step 4 — domain models & migrations (TDD-ready)**
-  `User`, `Account` (`balance_cents`, `currency`), `Order` (`amount_cents`,
-  `currency`, `status`), `Transaction` (append-only: `kind`, `amount_cents`,
-  `order_id`, `account_id`, ссылка на оригинал для reversal).
-  Индексы на все FK; уникальные индексы под идемпотентность
-  (один settlement / один reversal на заказ); CHECK-констрейнты.
+- **Step 7** — `POST /api/v1/accounts/:id/deposit` (пополнение через `Accounts::Deposit`).
+- **Step 8** — `POST /api/v1/orders` (создание заказа в статусе `created`).
+- **Step 9** — `POST /api/v1/orders/:id/success` (settlement: лок, проверка средств, дебет).
+- **Step 10** — `POST /api/v1/orders/:id/cancel` (reversal/возврат).
+- **Step 11** — HTTP `Idempotency-Key`. **Step 12** — README + curl.
 
-- **Step 5+** — команды (`app/services/`) с локами и проводками (спеки сначала),
-  query-объекты, контроллеры + panko-сериализаторы + роуты,
-  HTTP `Idempotency-Key`, финальный README с curl-примерами.
+## Заметки
 
-## Open questions / assumptions
-
-- Направление движения средств: успех = **кредит** счёта, отмена = сторно
-  (см. допущение в конце `docs/decisions.md`). Инвертируется тривиально.
+- Направление средств: успех = **дебет** кошелька, отмена = **возврат** (ADR-009).
+- При добавлении НОВОЙ корневой папки под `app/` нужен рестарт сервера (autoload-корни
+  фиксируются при загрузке; dev-reload подхватывает только содержимое существующих).
