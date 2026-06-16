@@ -36,6 +36,7 @@ group :development do
 end
 
 group :test do
+  gem 'benchmark'                 # в Ruby 4.0 вынесен из stdlib; нужен зависимости isolator (sniffer)
   gem 'isolator', require: false  # ловит небезопасные не-атомарные операции внутри БД-транзакций
   gem 'simplecov', require: false # отчёт о покрытии
   gem 'test-prof'                 # let_it_be / before_all — быстрые request-спеки
