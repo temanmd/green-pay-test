@@ -5,13 +5,11 @@
 /vendor/cache/
 
 db/*.sqlite3
-db/schema.rb
 /db/*.sqlite3-journal
 /log/*
 /tmp/*
 *.rbc
 *.sassc
-.rspec
 .redcar/
 .sass-cache
 /config/config.yml
@@ -78,3 +76,7 @@ coverage
 /config/master.key
 /config/credentials/stage.key
 /config/credentials/production.key
+
+# Ignore key files for decrypting credentials and more.
+/config/*.key
+
