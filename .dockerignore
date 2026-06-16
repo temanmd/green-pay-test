@@ -1,0 +1,13 @@
+.git
+.gitignore
+.github
+README.md
+docs
+.claude
+log/*
+tmp/*
+!tmp/pids
+coverage
+spec/tmp
+.rubocop_cache
+.DS_Store

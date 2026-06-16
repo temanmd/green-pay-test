@@ -1,0 +1,39 @@
+name: green-pay-test
+
+services:
+  db:
+    image: postgres:18-alpine
+    # Локальные dev/test-креды — не секреты, поэтому держим их прямо здесь:
+    # цель ТЗ — «одна команда, без ручной настройки окружения».
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: green_pay_test_development
+    ports:
+      - "5432:5432"  # проброс наружу: тесты/rails можно гонять и локально против этой БД
+    volumes:
+      - pg_data:/var/lib/postgresql  # PG18+: монтируем родительский каталог (данные в подпапке major-версии)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: green_pay_test_development
+      RAILS_ENV: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app  # живой код в контейнер; гемы лежат в /usr/local/bundle (образ), не пересекаются
+    depends_on:
+      db:
+        condition: service_healthy  # app стартует только после готовности БД
+
+volumes:
+  pg_data:
