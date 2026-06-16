@@ -1,0 +1,149 @@
+---
+inherit_from:
+  - .rubocop_todo.yml
+
+inherit_mode:
+  merge:
+    - Exclude
+    - Include
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 4.0
+  TargetRailsVersion: 8.1
+  CacheRootDirectory: tmp/rubocop_cache
+  DisplayCopNames: true
+  Exclude:
+    - "bin/**/*"
+    - "vendor/**/*"
+    - "sorbet/sorbet/vendor/**/*"
+    - "db/migrate/**/*"
+    - "db/schema.rb"
+    - "tmp/**/*"
+    - ".irbrc"
+
+plugins:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - "spec/**/*.rb"
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Max: 9
+  Severity: info
+
+Naming/PredicatePrefix:
+  Exclude:
+    - "app/serializers/**/*.rb"
+
+Rails:
+  Enabled: true
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+# NOTE: нельзя включать пока в настройках config.active_record.belongs_to_required_by_default = false
+Rails/RedundantPresenceValidationOnBelongsTo:
+  Enabled: false
+
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - test
+    - production
+    - stage
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - "db/migrate/*"
+
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
+Style/UnlessLogicalOperators:
+  Enabled: true
+  EnforcedStyle: forbid_logical_operators
+
+RSpec/LetSetup:
+  Enabled: false
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 4
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/ContextWording:
+  Prefixes:
+    - when
+    - with
+    - without
+    - and
+    - but
+    - если
+    - когда
+
+Lint/RaiseException:
+  Enabled: true
+Lint/StructNewOverride:
+  Enabled: true
+Style/EmptyClassDefinition:
+  Enabled: false
+Style/ExponentialNotation:
+  Enabled: true
+Style/SlicingWithRange:
+  Enabled: true
