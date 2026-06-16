@@ -41,9 +41,12 @@
   `POST /api/v1/accounts/:id/deposit` поверх `Accounts::Deposit`. `render_errors` вынесен
   в `Api::BaseController` (DRY). Спека red→green (3), проверено curl (1000→1500, 422, 404).
 
+- **Step 8 — POST/GET orders**
+  `Orders::Create` (валюта наследуется от счёта; user_id/amount валидируются → 422),
+  `OrderSerializer`, `POST /orders` + `GET /orders/:id`. Спека red→green (6), проверено curl.
+
 ## Next
 
-- **Step 8** — `POST /api/v1/orders` (создание заказа в статусе `created`).
 - **Step 9** — `POST /api/v1/orders/:id/success` (settlement: лок, проверка средств, дебет).
 - **Step 10** — `POST /api/v1/orders/:id/cancel` (reversal/возврат).
 - **Step 11** — HTTP `Idempotency-Key`. **Step 12** — README + curl.
