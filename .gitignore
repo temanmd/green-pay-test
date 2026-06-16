@@ -1,0 +1,80 @@
+# bundler state
+/.bundle
+/vendor/bundle/
+/vendor/ruby/
+/vendor/cache/
+
+db/*.sqlite3
+db/schema.rb
+/db/*.sqlite3-journal
+/log/*
+/tmp/*
+*.rbc
+*.sassc
+.rspec
+.redcar/
+.sass-cache
+/config/config.yml
+/coverage.data
+/coverage/
+/db/*.javadb/
+/db/*.sqlite3
+/public/cache
+/public/stylesheets/compiled
+/public/system/*
+/public/uploads/*
+/spec/tmp/*
+/cache
+/gems
+/specifications
+.zeus.sock
+
+# scm revert files
+**.orig
+
+# Mac finder artifacts
+.DS_Store
+
+# Netbeans project directory
+/nbproject/
+
+# RubyMine project files
+.idea
+
+# Textmate project files
+/*.tmproj
+
+# vim artifacts
+**.swp
+**.swn
+**.swm
+**.swo
+
+# Environment files that may contain sensitive data
+.powenv
+.tool-versions
+.tool-versions-e
+
+# Ignore application configuration
+.elasticbeanstalk/
+node_modules
+*.log
+.ftppass
+.tmp
+.grunt
+.yo-rc.json
+vendor/bundle
+config/provision/resources/rhel
+
+#vscode
+.vscode/*
+!.vscode/extensions.json
+
+# aws labmda deploy archive
+coverage
+
+.ruby-gemset
+
+/config/master.key
+/config/credentials/stage.key
+/config/credentials/production.key
